@@ -1,45 +1,27 @@
-# Aurélien Pont – Portfolio professionnel
+# Aurélien Pont — CV professionnel
 
-Bienvenue sur mon portfolio professionnel.
+Site statique HTML/CSS/JavaScript, conçu pour être modifié facilement et publié sur GitHub Pages.
 
-Je suis **Technicien Systèmes & Réseaux**, diplômé du BTS SIO option SISR en 2026.
+## Aperçu local
+Ouvrir `index.html` dans un navigateur. Aucun serveur ni base de données ne sont nécessaires.
 
-Ce site présente mon parcours, mes expériences professionnelles, mes compétences techniques et mes projets informatiques.
+## Modifier le contenu
+- `index.html` : textes, expériences, compétences, projets et coordonnées.
+- `cv.html` : version CV imprimable. Utiliser le bouton « Imprimer / Enregistrer en PDF » pour générer un PDF à jour depuis le navigateur.
+- `assets/css/style.css` : couleurs, tailles, mise en page et adaptation mobile.
+- `assets/js/main.js` : menu mobile et année automatique du pied de page.
+- `assets/images/aurelien-pont.jpg` : photo de profil.
 
-## 👨‍💻 Expériences professionnelles
+## Publication GitHub Pages
+1. Créer un nouveau dépôt GitHub (par exemple `aurelien-pont-cv`).
+2. Déposer le contenu de ce dossier à la racine du dépôt.
+3. Dans Settings → Pages, choisir la branche `main` et le dossier `/ (root)`.
+4. GitHub Pages publiera le site à l'adresse indiquée dans les paramètres.
 
-- **Rubix** – Technicien informatique (depuis septembre 2026)
-- **Novares** – Assistant informatique / systèmes et réseaux (2024–2026)
+## À vérifier avant publication
+- Confirmer l'intitulé exact du poste chez Rubix.
+- Vérifier les coordonnées affichées et décider si l'adresse e-mail doit rester publique.
+- Vérifier les liens des dossiers PPE et missions.
+- Ajouter le PDF CV définitif après validation.
 
-## 🎓 Formation
-
-- BTS SIO – Option SISR (obtenu en 2026)
-- Titre professionnel Technicien d'Assistance Informatique
-
-## 🛠️ Compétences techniques
-
-- Support informatique N1/N2
-- Windows et Windows Server
-- Active Directory et Microsoft Entra ID
-- Administration systèmes et réseaux
-- SCCM et déploiement de postes
-- Microsoft 365
-- Sécurité informatique et sauvegardes
-
-## 🚀 Projets
-
-- Projet d'infrastructure CICAR
-- Projets techniques BTS SIO
-- Documentation et réalisations systèmes et réseaux
-
-## 🌐 Site en ligne
-
-Portfolio : [Ajouter ici l'adresse GitHub Pages]
-
-## 📫 Contact
-
-LinkedIn : [Profil LinkedIn](https://www.linkedin.com/in/aurelienpont)
-
----
-
-*Portfolio professionnel – Aurélien Pont*
+Les anciens dossiers de missions et PPE sont conservés dans `portfolio/` pour garder les ressources techniques du portfolio BTS.
