@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réparation Matériel - Novares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background: #f6f8fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid #d1d9e0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
+        }
+
+        .header-main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .competences-sidebar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .competences-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+
+        .competence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .competence-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competence-badge {
+            background: white;
+            color: #24292f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .competence-text {
+            font-size: 0.9em;
+            color: white;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .info-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .info-card h3 {
+            color: #dc2626;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .site-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .site-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .site-card h4 {
+            color: #991b1b;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .procedure {
+            margin-top: 32px;
+        }
+
+        .procedure h2 {
+            color: #24292f;
+            border-bottom: 2px solid #dc2626;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .step {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .step:hover {
+            border-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
+            background: #dc2626;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .step h3 {
+            color: #24292f;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .step-content {
+            color: #656d76;
+            line-height: 1.6;
+        }
+
+        .status-indicator {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 4px;
+            font-size: 0.875em;
+        }
+
+        .status-ok {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .highlight strong {
+            color: #92400e;
+        }
+
+        .tech-info {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .tech-info strong {
+            color: #dc2626;
+        }
+
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .procedure-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #d1d9e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .procedure-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .image-caption {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #656d76;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .mock-console {
+            background: #0d1117;
+            color: #c9d1d9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875em;
+        }
+
+        .console-line {
+            margin: 4px 0;
+            padding: 4px;
+        }
+
+        .console-success {
+            color: #7dd3fc;
+        }
+
+        .console-success::before {
+            content: "✓ ";
+            color: #10b981;
+        }
+
+        .footer {
+            background: #24292f;
+            color: #f0f6fc;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9em;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .header {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 24px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 24px;
+            }
+
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .step-number {
+                margin-right: 0;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.95rem;
+            }
+        }
+        :root {
+        /* Palette de couleurs */
+        --primary-color: #dc2626;
+        --primary-hover: #ef4444;
+        --bg-color: #f6f8fa;
+        --text-main: #24292f;
+        --text-muted: #656d76;
+        --white: #ffffff;
+        --border-color: #d1d9e0;
+        
+        /* Espacements */
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    /* Ensuite, utilise-les dans ton code */
+    body {
+        background: var(--bg-color);
+        color: var(--text-main);
+        /* ... */
+    }
+
+    .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+        /* ... */
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-main">
+                <h1>🔧 Réparation Matériel</h1>
+                <p class="subtitle">Diagnostic et remplacement composants</p>
+            </div>
+            <div class="competences-sidebar">
+                <h3>🎯 Compétences E4</h3>
+                <div class="competence-list">
+                    <div class="competence-item">
+                        <span class="competence-badge">A1, B1, B2</span>
+                        <span class="competence-text">Diagnostic et réparation matériel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="info-card">
+                <h3>📋 Contexte de l'incident</h3>
+                <p>Réparation d'un PC portable endommagé par un déversement d'eau. Procédure de récupération des données et remplacement du matériel avec gestion de l'inventaire.</p>
+            </div>
+
+            <div class="sites-grid">
+                <div class="site-card">
+                    <h4>💻 PC Portable</h4>
+                    <p>DELL Latitude 5490</p>
+                </div>
+                <div class="site-card">
+                    <h4>💧 Type d'incident</h4>
+                    <p>Déversement d'eau</p>
+                </div>
+                <div class="site-card">
+                    <h4>🔧 Solution</h4>
+                    <p>Réutilisation du SSD</p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>🎯 Situation initiale :</strong> Une collaboratrice a renversé de l'eau sur son PC portable. Le matériel a été récupéré, le SSD de 250Go et la batterie retirés, puis installés sur un PC de rechange.
+            </div>
+
+            <div class="procedure">
+                <h2>⚙️ Procédure technique détaillée</h2>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Récupération et diagnostic du matériel</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Récupérer le PC portable endommagé et effectuer un diagnostic initial des composants.</p>
+
+                        <div class="image-container">
+                            <img src="../tof/rep/rep1.jpeg" alt="PC portable ouvert avec SSD visible" class="procedure-image">
+                            <div class="image-caption">🔧 PC ouvert - Extraction du SSD de 250Go</div>
+                        </div>
+
+                        <div class="tech-info">
+                            <strong>💡 Actions réalisées :</strong> Débranchement de la batterie, extraction du SSD NVMe 250Go, vérification des autres composants pour dommages liés à l'eau.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Préparation du PC de remplacement</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Utiliser un PC de rechange du stock et installer le SSD récupéré.</p>
+
+                        <div class="tech-info">
+                            <strong>🔧 Configuration :</strong> Le SSD de 250Go contenant le système d'exploitation et les données de la collaboratrice est installé dans le PC de remplacement avec la batterie récupérée.
+                        </div>
+
+                        <p>Cette approche permet de préserver l'environnement de travail existant tout en remplaçant le matériel défectueux.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Démarrage et écran BitLocker</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Au premier démarrage, le système demande la clé de récupération BitLocker pour déverrouiller le lecteur.</p>
+
+                        <div class="image-container">
+                            <img src="../tof/rep/rep4.jpeg" alt="Écran de récupération BitLocker" class="procedure-image">
+                            <div class="image-caption">🔐 Écran BitLocker - Demande de clé de récupération</div>
+                        </div>
+
+                        <div class="tech-info">
+                            <strong>⚠️ Sécurité :</strong> BitLocker détecte un changement matériel significatif et demande la clé de récupération pour assurer la sécurité des données.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Récupération de la clé BitLocker via ADManager</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Se connecter à ADManager pour récupérer la clé de récupération BitLocker associée à l'ordinateur.</p>
+
+                        <div class="image-container">
+                            <img src="../tof/rep/rep3.jpeg" alt="Récupération de la clé BitLocker dans ADManager" class="procedure-image">
+                            <div class="image-caption">🗝️ ADManager - Récupération de la clé BitLocker</div>
+                        </div>
+
+                        <div class="mock-console">
+                            <div class="console-line console-success">Connexion à ADManager réussie</div>
+                            <div class="console-line console-success">Recherche de l'ordinateur ex:62JDOE</div>
+                            <div class="console-line console-success">Clé BitLocker trouvée: 123456-789012-345678-901234-567890-123456-789012-345678</div>
+                            <div class="console-line console-success">Clé copiée dans le presse-papiers</div>
+                        </div>
+
+                        <p>La clé de récupération est stockée de manière sécurisée dans Active Directory pour ce type de situation.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3>Déverrouillage du système</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Saisir la clé de récupération BitLocker pour déverrouiller le système et accéder aux données.</p>
+                         <div class="image-container">
+                            <img src="../tof/rep/rep2.jpeg" alt="Écran de récupération BitLocker" class="procedure-image">
+                            <div class="image-caption">🔐 Écran BitLocker - Saisi de la clé de récupération</div>
+                        </div>
+                        <div class="tech-info">
+                            <strong>✅ Validation :</strong> Après saisie de la clé, le système démarre normalement et tous les fichiers de la collaboratrice sont accessibles.
+                        </div>
+
+                        <div style="margin: 16px 0;">
+                            <h4 style="margin-bottom: 8px;">Statut du système :</h4>
+                            <span class="status-ok">✅ Système déverrouillé</span> - Accès complet aux données<br>
+                            <span class="status-ok">✅ Applications fonctionnelles</span> - Tous les logiciels opérationnels<br>
+                            <span class="status-ok">✅ Données intactes</span> - Aucune perte de données
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h3>Gestion de l'inventaire</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Mettre à jour l'inventaire avec les changements matériels et logiciels.</p>
+
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em;">
+                                <thead>
+                                    <tr style="background: #f6f8fa;">
+                                        <th style="border: 1px solid #d1d9e0; padding: 12px; text-align: left;">Élément</th>
+                                        <th style="border: 1px solid #d1d9e0; padding: 12px; text-align: left;">Ancien matériel</th>
+                                        <th style="border: 1px solid #d1d9e0; padding: 12px; text-align: left;">Nouveau matériel</th>
+                                        <th style="border: 1px solid #d1d9e0; padding: 12px; text-align: left;">Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">Tag inventaire</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">62SPARE5490L20</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">ex:62JDOE</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;"><span class="status-ok">Transféré</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">SSD</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">250Go NVMe</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">Même SSD</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;"><span class="status-ok">Récupéré</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">Batterie</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">Origine</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;">Même batterie</td>
+                                        <td style="border: 1px solid #d1d9e0; padding: 12px;"><span class="status-ok">Récupérée</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>Cette documentation assure la traçabilité du matériel et la mise à jour correcte de l'inventaire.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">7</span>
+                        <h3>Finalisation et remise à l'utilisatrice</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Effectuer une vérification finale du système et remettre le PC à la collaboratrice.</p>
+
+                        <div class="tech-info">
+                            <strong>📝 Points de contrôle :</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px;">
+                                <li>Connexion au domaine Novares</li>
+                                <li>Accès aux ressources réseau</li>
+                                <li>Fonctionnement des applications métier</li>
+                                <li>Impression et périphériques</li>
+                            </ul>
+                        </div>
+
+                        <div class="highlight">
+                            <strong>✅ Résultat :</strong> La collaboratrice retrouve son environnement de travail exactement dans l'état où elle l'avait laissé, sans perte de données ni de productivité.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>🔑 Points de contrôle essentiels</h3>
+                <div style="margin-top: 12px;">
+                    <div style="margin: 8px 0;">✅ <strong>Sécurité données :</strong> Récupération clé BitLocker via ADManager</div>
+                    <div style="margin: 8px 0;">✅ <strong>Matériel :</strong> Réutilisation du SSD et de la batterie</div>
+                    <div style="margin: 8px 0;">✅ <strong>Inventaire :</strong> Mise à jour des tags matériels</div>
+                    <div style="margin: 8px 0;">✅ <strong>Utilisateur :</strong> Environnement préservé sans perte</div>
+                    <div style="margin: 8px 0;">✅ <strong>Documentation :</strong> Traçabilité complète de l'intervention</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Documentation technique Novares - Diagnostic et réparation matériel</p>
+            <p>© 2024-2026 Novares Group. Tous droits réservés.</p>
+        </div>
+    </div>
+
+ <a href="#" class="back-to-top" id="backToTop">← Retour au portfolio</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // Gestion du clic pour revenir à l'index
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirection vers index.html à l'ancre #experiences
+            window.location.href = '../index.html#experiences';
+        });
+        
+        // Affichage du bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>

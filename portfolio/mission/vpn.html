@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification de la Configuration VPN FortiClient - Novares</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background: #f6f8fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid #d1d9e0;
+        }
+        
+        /* --- HEADER VERT --- */
+        .header {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
+        }
+
+        /* Wrapper pour la grille du header */
+        .header-content-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* --- SIDEBAR COMPETENCES --- */
+        .competences-sidebar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competences-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+
+        .competence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .competence-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competence-badge {
+            background: white;
+            color: #24292f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .competence-text {
+            font-size: 0.9em;
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* --- CONTENT --- */
+        .content {
+            padding: 40px;
+        }
+        
+        .info-card {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .info-card h3 {
+            color: #166534;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .site-card {
+            background: #f0fdf4;
+            border: 1px solid #4ade80;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .site-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .site-card h4 {
+            color: #059669;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .procedure {
+            margin-top: 32px;
+        }
+        
+        .procedure h2 {
+            color: #24292f;
+            border-bottom: 2px solid #059669;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .step {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .step:hover {
+            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .step-number {
+            background: #059669;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .step h3 {
+            color: #24292f;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            color: #656d76;
+            line-height: 1.6;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .procedure-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #d1d9e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .procedure-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .image-caption {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #656d76;
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .mock-vpn-console {
+            background: #0d1117;
+            color: #c9d1d9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875em;
+        }
+        
+        .mock-vpn-console .title-bar {
+            background: #374151;
+            margin: -16px -16px 12px -16px;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .vpn-line {
+            margin: 4px 0;
+            padding: 4px;
+        }
+        
+        .vpn-success {
+            color: #7dd3fc;
+        }
+        
+        .vpn-success::before {
+            content: "✓ ";
+            color: #10b981;
+        }
+        
+        .status-ok {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 4px;
+            font-size: 0.875em;
+        }
+        
+        .highlight {
+            background: #f0fdf4;
+            border: 1px solid #4ade80;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .highlight strong {
+            color: #166534;
+        }
+        
+        .tech-info {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .tech-info strong {
+            color: #1d4ed8;
+        }
+        
+        /* --- FOOTER --- */
+        .footer {
+            background: #24292f;
+            color: #f0f6fc;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- BOUTON FLOTTANT VERT --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 24px;
+            }
+            
+            .header-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .step-number {
+                margin-right: 0;
+            }
+
+            .competences-sidebar {
+                padding: 15px;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content-wrapper">
+                <div>
+                    <h1>🛡️ VPN FortiClient</h1>
+                    <div class="subtitle">Configuration et support utilisateurs distants</div>
+                </div>
+                <div class="competences-sidebar">
+                    <h3>🎯 Compétences E4</h3>
+                    <div class="competence-list">
+                        <div class="competence-item">
+                            <span class="competence-badge">A2, A6, E2, E3</span>
+                            <span class="competence-text">Configuration VPN et support à distance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="info-card">
+                <h3>📋 Contexte de la procédure</h3>
+                <p>Suite à une mauvaise mise à jour ou via un déploiement SCCM, cette procédure permet de vérifier et configurer correctement les paramètres VPN dans FortiClient pour assurer la connectivité sécurisée des utilisateurs.</p>
+            </div>
+            
+            <div class="sites-grid">
+                <div class="site-card">
+                    <h4>🏢 Site de Lens</h4>
+                    <p>Centre d'expertise</p>
+                </div>
+                <div class="site-card">
+                    <h4>🏭 Site de Libercourt</h4>
+                    <p>Usine</p>
+                </div>
+                <div class="site-card">
+                    <h4>🏭 Site de Villers-Bretonneux</h4>
+                    <p>Usine</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>🎯 Déclenchement :</strong> Cette procédure est initiée suite à un incident de connexion VPN ou après un déploiement/mise à jour via SCCM.
+            </div>
+            
+            <div class="procedure">
+                <h2>⚙️ Procédure de vérification et configuration</h2>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Ouverture de FortiClient</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Lancer l'application FortiClient depuis le menu Démarrer ou la barre des tâches.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/vpn/vpn1.jpg" alt="Icône FortiClient" class="procedure-image">
+                            <div class="image-caption">📱 Lancement de FortiClient</div>
+                        </div>
+                        
+                        <div class="tech-info">
+                            <strong>💡 Information :</strong> FortiClient est le client VPN officiel Fortinet utilisé pour établir des connexions sécurisées aux réseaux d'entreprise.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Vérification de l'onglet VPN</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Cliquer sur l'onglet "VPN" dans l'interface FortiClient pour accéder aux configurations de connexion.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/vpn/vpn2.jpg" alt="Onglet VPN FortiClient" class="procedure-image">
+                            <div class="image-caption">🔍 Onglet VPN dans FortiClient</div>
+                        </div>
+                        
+                        <div class="tech-info">
+                            <strong>🔐 Sécurité :</strong> L'onglet VPN permet de gérer toutes les connexions sécurisées aux différents sites de l'entreprise.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Configuration des paramètres de connexion</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Vérifier et configurer les paramètres de connexion pour chaque site.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/vpn/vpn3.jpg" alt="Paramètres de connexion VPN" class="procedure-image">
+                            <div class="image-caption">⚙️ Paramètres de connexion VPN</div>
+                        </div>
+                        
+                        <div class="mock-vpn-console">
+                            <div class="title-bar">Configuration VPN - Paramètres requis</div>
+                            <div class="vpn-line vpn-success">Connection Name: <strong>Novares_Lens</strong></div>
+                            <div class="vpn-line vpn-success">Remote Gateway: <strong>vpn-lens.novares.com</strong></div>
+                            <div class="vpn-line vpn-success">Customize Port: <strong>443</strong></div>
+                            <div class="vpn-line vpn-success">Authentication: <strong>SSL</strong></div>
+                        </div>
+                        
+                        <p>Ces paramètres doivent correspondre exactement à ceux fournis par l'équipe infrastructure.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Vérification des certificats</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Vérifier que les certificats nécessaires sont installés et valides.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/vpn/vpn4.jpg" alt="Gestion des certificats" class="procedure-image">
+                            <div class="image-caption">📋 Gestion des certificats VPN</div>
+                        </div>
+                        
+                        <p>Les certificats assurent l'authentification mutuelle entre le client et le serveur VPN.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3>Test de connexion</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Tester la connexion VPN en cliquant sur "Connect" et vérifier l'établissement du tunnel.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/vpn/vpn5.jpg" alt="Test de connexion VPN" class="procedure-image">
+                            <div class="image-caption">🔗 Test de connexion VPN</div>
+                        </div>
+                        
+                        <div class="highlight">
+                            <strong>🎯 Validation :</strong> Une connexion réussie affiche le statut "Connected" avec une adresse IP attribuée.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h3>Vérification de la connectivité</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Vérifier l'accès aux ressources internes après connexion réussie.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/vpn/vpn6.jpg" alt="Vérification de la connectivité" class="procedure-image">
+                            <div class="image-caption">🌐 Vérification de l'accès aux ressources</div>
+                        </div>
+                        
+                        <div style="margin: 16px 0;">
+                            <h4 style="margin-bottom: 8px;">Tests de connectivité à effectuer :</h4>
+                            <span class="status-ok">✅ Ping vers les serveurs critiques</span><br>
+                            <span class="status-ok">✅ Accès aux partages réseau</span><br>
+                            <span class="status-ok">✅ Connexion aux applications métier</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🔑 Points de contrôle essentiels</h3>
+                <div style="margin-top: 12px;">
+                    <div style="margin: 8px 0;">✅ <strong>Paramètres serveur :</strong> Adresse du gateway et port corrects</div>
+                    <div style="margin: 8px 0;">✅ <strong>Certificats :</strong> Présents et valides</div>
+                    <div style="margin: 8px 0;">✅ <strong>Connexion :</strong> Établissement réussi du tunnel VPN</div>
+                    <div style="margin: 8px 0;">✅ <strong>Connectivité :</strong> Accès aux ressources internes</div>
+                    <div style="margin: 8px 0;">✅ <strong>Documentation :</strong> Paramètres enregistrés pour référence</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Documentation technique Novares - Configuration VPN et support à distance</p>
+            <p>© 2024-2026 Novares Group. Tous droits réservés.</p>
+        </div>
+    </div>
+    
+<a href="#" class="back-to-top" id="backToTop">← Retour au portfolio</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // Gestion du clic pour revenir à l'index
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirection vers index.html à l'ancre #experiences
+            window.location.href = '../index.html#experiences';
+        });
+        
+        // Affichage du bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>

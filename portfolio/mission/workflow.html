@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow OUT - Procédure de Sortie Collaborateur - Novares</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background: #f6f8fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid #d1d9e0;
+        }
+        
+        /* --- HEADER MARRON/AMBRÉ --- */
+        .header {
+            background: linear-gradient(135deg, #92400e, #d97706);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
+        }
+
+        /* Wrapper pour la grille du header */
+        .header-content-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* --- SIDEBAR COMPETENCES --- */
+        .competences-sidebar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competences-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+
+        .competence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .competence-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competence-badge {
+            background: white;
+            color: #24292f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .competence-text {
+            font-size: 0.9em;
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* --- CONTENT --- */
+        .content {
+            padding: 40px;
+        }
+        
+        .info-card {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .info-card h3 {
+            color: #92400e;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .site-card {
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .site-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .site-card h4 {
+            color: #92400e;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .procedure {
+            margin-top: 32px;
+        }
+        
+        .procedure h2 {
+            color: #24292f;
+            border-bottom: 2px solid #92400e;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .step {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .step:hover {
+            border-color: #92400e;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .step-number {
+            background: #92400e;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .step h3 {
+            color: #24292f;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            color: #656d76;
+            line-height: 1.6;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .procedure-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #d1d9e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .procedure-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .image-caption {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #656d76;
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .mock-interface {
+            background: #0d1117;
+            color: #c9d1d9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875em;
+        }
+        
+        .mock-interface .title-bar {
+            background: #374151;
+            margin: -16px -16px 12px -16px;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .mock-ticket {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .mock-ticket-header {
+            background: #92400e;
+            color: white;
+            margin: -16px -16px 16px -16px;
+            padding: 12px 16px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+        }
+        
+        .vpn-line {
+            margin: 4px 0;
+            padding: 4px;
+        }
+        
+        .vpn-success {
+            color: #7dd3fc;
+        }
+        
+        .vpn-success::before {
+            content: "✓ ";
+            color: #10b981;
+        }
+        
+        .status-ok {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 4px;
+            font-size: 0.875em;
+        }
+        
+        .highlight {
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .highlight strong {
+            color: #92400e;
+        }
+        
+        .tech-info {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .tech-info strong {
+            color: #92400e;
+        }
+        
+        /* --- FOOTER --- */
+        .footer {
+            background: #24292f;
+            color: #f0f6fc;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- BOUTON FLOTTANT MARRON/AMBRÉ --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #92400e, #d97706);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 24px;
+            }
+            
+            .header-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .step-number {
+                margin-right: 0;
+            }
+
+            .competences-sidebar {
+                padding: 15px;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content-wrapper">
+                <div>
+                    <h1>📋 Suivi Workflows</h1>
+                    <div class="subtitle">Gestion mouvements matériel</div>
+                </div>
+                <div class="competences-sidebar">
+                    <h3>🎯 Compétences E4</h3>
+                    <div class="competence-list">
+                        <div class="competence-item">
+                            <span class="competence-badge">A1, A4</span>
+                            <span class="competence-text">Suivi matériel (entrées/sorties/mouvements)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="info-card">
+                <h3>📋 Contexte de la procédure</h3>
+                <p>Cette procédure décrit le workflow OUT pour la gestion du départ d'un collaborateur de l'entreprise Novares. Elle existe pour la restitution du matériel, la désactivation des accès et la clôture administrative.</p>
+            </div>
+            
+            <div class="sites-grid">
+                <div class="site-card">
+                    <h4>🏢 Site de Lens</h4>
+                    <p>Centre d'expertise</p>
+                </div>
+                <div class="site-card">
+                    <h4>🏭 Site de Libercourt</h4>
+                    <p>Usine</p>
+                </div>
+                <div class="site-card">
+                    <h4>🏭 Site de Villers-Bretonneux</h4>
+                    <p>Usine</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>🎯 Déclenchement :</strong> Cette procédure est initiée lors de l'annonce du départ d'un(e) collaborateur(trice) (démission, retraite, fin de contrat).
+            </div>
+            
+            <div class="procedure">
+                <h2>⚙️ Procédure de sortie du collaborateur</h2>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Création du ticket de demande</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Les ressources humaines créent un ticket dans le système de gestion des demandes pour initier le processus de sortie.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/out/out1.png" alt="Création du ticket de demande" class="procedure-image">
+                            <div class="image-caption">📋 Création du ticket de demande de sortie</div>
+                        </div>
+                        
+                        <div class="mock-ticket">
+                            <div class="mock-ticket-header">Ticket #OUT-2024-001</div>
+                            <p><strong>Type :</strong> Sortie collaborateur</p>
+                            <p><strong>Demandeur :</strong> Manager du site</p>
+                            <p><strong>Collaborateur :</strong> Alternante</p>
+                            <p><strong>Date de départ :</strong> 15/11/2024</p>
+                            <p><strong>Statut :</strong> Nouveau</p>
+                        </div>
+                        
+                        <div class="tech-info">
+                            <strong>💡 Information :</strong> Le ticket doit contenir toutes les informations nécessaires : identité du collaborateur, date de départ, poste occupé, matériel à restituer.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Accès à SWF (Sortie Workflow)</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>L'équipe IT accède au système SWF pour traiter la demande de sortie.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/out/out2.png" alt="Accès à SWF" class="procedure-image">
+                            <div class="image-caption">🔧 Interface SWF - Gestion des sorties</div>
+                        </div>
+                        
+                        <div class="mock-interface">
+                            <div class="title-bar">SWF - Sortie Workflow</div>
+                            <div class="vpn-line vpn-success">Utilisateur: <strong>RH_NOVARES</strong></div>
+                            <div class="vpn-line vpn-success">Département: <strong>Ressources Humaines</strong></div>
+                            <div class="vpn-line vpn-success">Ticket: <strong>#OUT-2024-001</strong></div>
+                            <div class="vpn-line vpn-success">Statut: <strong>En traitement</strong></div>
+                        </div>
+                        
+                        <p>Dans SWF, l'équipe RH vérifie les informations et prépare le processus de sortie.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>OUT avec numéro</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>OUT avec attribution d'un numéro unique dans le système.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/out/out3.png" alt="Création du OUT avec numéro" class="procedure-image">
+                            <div class="image-caption">📄 Fichier OUT numéroté</div>
+                        </div>
+                        
+                        <div class="mock-ticket">
+                            <div class="mock-ticket-header">Dossier OUT #OUT-2024-001-123</div>
+                            <p><strong>Collaborateur :</strong> Alternante</p>
+                            <p><strong>Matricule :</strong> 12345</p>
+                            <p><strong>Date création :</strong> ex: 01/11/2024</p>
+                            <p><strong>Échéance :</strong> ex: 15/11/2024</p>
+                            <p><strong>Statut :</strong> En cours</p>
+                        </div>
+                        
+                        <p>Ce fichier OUT servira de référence pour toutes les étapes de la procédure de sortie.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Validation du OUT</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Validation du fichier OUT après complétion de toutes les étapes de la procédure de sortie.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/out/out4.png" alt="Validation du OUT" class="procedure-image">
+                            <div class="image-caption">✅ Validation du dossier OUT</div>
+                        </div>
+                        
+                        <div style="margin: 16px 0;">
+                            <h4 style="margin-bottom: 8px;">Étapes de validation :</h4>
+                            <span class="status-ok">✅ Matériel restitué (ordinateur, badge, téléphone)</span><br>
+                            <span class="status-ok">✅ Accès informatique désactivés</span><br>
+                            <span class="status-ok">✅ Comptes fermés</span><br>
+                            <span class="status-ok">✅ Documentation RH complétée</span><br>
+                            <span class="status-ok">✅ Solde de tout compte préparé</span>
+                        </div>
+                        
+                        <div class="mock-ticket">
+                            <div class="mock-ticket-header">Dossier OUT #OUT-2024-001-123 - VALIDÉ</div>
+                            <p><strong>Date validation :</strong> 14/11/2024</p>
+                            <p><strong>Validé par :</strong> Responsable RH</p>
+                            <p><strong>Statut :</strong> <span style="color: green; font-weight: bold;">Terminé</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3>Validation du ticket</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Clôture et validation du ticket initial après confirmation de la complétion du processus.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/out/out5.png" alt="Validation du ticket" class="procedure-image">
+                            <div class="image-caption">🏁 Clôture du ticket de demande</div>
+                        </div>
+                        
+                        <div class="mock-ticket">
+                            <div class="mock-ticket-header">Ticket #OUT-2024-001 - FERMÉ</div>
+                            <p><strong>Date clôture :</strong> ex: 14/11/2024</p>
+                            <p><strong>Résolution :</strong> Processus de sortie complété</p>
+                            <p><strong>Dossier OUT :</strong> #OUT-2024-001-123</p>
+                            <p><strong>Statut :</strong> <span style="color: green; font-weight: bold;">Résolu</span></p>
+                        </div>
+                        
+                        <p>Le ticket est fermé avec les commentaires appropriés et archivé dans le système.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🔑 Points de contrôle essentiels</h3>
+                <div style="margin-top: 12px;">
+                    <div style="margin: 8px 0;">✅ <strong>Ticket :</strong> Demande correctement documentée</div>
+                    <div style="margin: 8px 0;">✅ <strong>SWF :</strong> Accès et traitement dans le système</div>
+                    <div style="margin: 8px 0;">✅ <strong>Dossier OUT :</strong> Numéro unique attribué</div>
+                    <div style="margin: 8px 0;">✅ <strong>Validation :</strong> Toutes les étapes complétées</div>
+                    <div style="margin: 8px 0;">✅ <strong>Clôture :</strong> Ticket fermé avec documentation</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Documentation technique Novares - Suivi matériel (entrées/sorties/mouvements)</p>
+            <p>© 2024-2026 Novares Group. Tous droits réservés.</p>
+        </div>
+    </div>
+    
+ <a href="#" class="back-to-top" id="backToTop">← Retour au portfolio</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // Gestion du clic pour revenir à l'index
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirection vers index.html à l'ancre #experiences
+            window.location.href = '../index.html#experiences';
+        });
+        
+        // Affichage du bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>

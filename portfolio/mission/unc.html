@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 Mise à jour VPN 7.2.11 → 7.2.12 - Accès UNC</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background: #f6f8fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid #d1d9e0;
+        }
+        
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
+        }
+        
+        .header-content {
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* --- SIDEBAR COMPETENCES --- */
+        .competences-sidebar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .competences-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+
+        .competence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .competence-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competence-badge {
+            background: white;
+            color: #24292f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .competence-text {
+            font-size: 0.9em;
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* --- CONTENT --- */
+        .content {
+            padding: 40px;
+        }
+        
+        .info-card {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .info-card h3 {
+            color: #1e40af;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .procedure {
+            margin-top: 32px;
+        }
+        
+        .procedure h2 {
+            color: #24292f;
+            border-bottom: 2px solid #1e40af;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .step {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .step:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .step-number {
+            background: #1e40af;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .step h3 {
+            color: #24292f;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            color: #656d76;
+            line-height: 1.6;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .procedure-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #d1d9e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .procedure-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .image-caption {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #656d76;
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .highlight {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .highlight strong {
+            color: #92400e;
+        }
+        
+        .tech-info {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .tech-info strong {
+            color: #1d4ed8;
+        }
+        
+        /* --- FOOTER --- */
+        .footer {
+            background: #24292f;
+            color: #f0f6fc;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- BOUTON FLOTTANT --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 24px;
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header-content {
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .step-number {
+                margin-right: 0;
+            }
+
+            .competences-sidebar {
+                padding: 15px;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>🔒 Mise à jour du VPN 7.2.11 → 7.2.12</h1>
+                <div class="subtitle">Procédure via Accès UNC - Documentation Technique</div>
+            </div>
+            <div class="competences-sidebar">
+                <h3>🎯 Compétences E4</h3>
+                <div class="competence-list">
+                    <div class="competence-item">
+                        <span class="competence-badge">A1, B2, E2</span>
+                        <span class="competence-text">Installation logiciels via UNC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="info-card">
+                <h3>📋 Contexte de la procédure</h3>
+                <p>Cette procédure décrit les étapes à suivre pour mettre à jour le client VPN de la version <strong>7.2.11</strong> vers <strong>7.2.12</strong> en utilisant un accès réseau via <strong>UNC</strong> (Universal Naming Convention). L'objectif est d'assurer la compatibilité et la sécurité du service VPN utilisé dans l'environnement de travail.</p>
+            </div>
+
+            <div class="procedure">
+                <h2>⚙️ Procédure technique détaillée</h2>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Connexion via l'UNC</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Accédez au partage réseau contenant le package de mise à jour VPN.</p>
+                        
+                        <div class="tech-info">
+                            <strong>📂 Chemin UNC :</strong> \\srv-it\vpn\update\
+                        </div>
+                        
+                        <p>Assurez-vous d'avoir les droits d'accès nécessaires avant de poursuivre.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/unc/unc1.png" alt="Accès UNC" class="procedure-image">
+                            <div class="image-caption">📁 Accès au dossier UNC contenant le package VPN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Copie du package VPN</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Copiez le dossier <strong>VPN_7.2.12_Setup</strong> sur votre poste local (ex. Bureau ou Téléchargements).</p>
+                        
+                        <div class="highlight">
+                            <strong>⚠️ Important :</strong> Ne lancez pas encore l'installation depuis le réseau pour éviter les erreurs d'accès.
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="../tof/unc/unc2.png" alt="Copie du package VPN" class="procedure-image">
+                            <div class="image-caption">📦 Copie du package d'installation sur le poste local</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Installation de la mise à jour</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Exécutez le fichier <strong>setup.exe</strong> en tant qu'administrateur.</p>
+                        <p>Suivez les instructions de l'assistant d'installation et laissez la mise à jour remplacer la version précédente.</p>
+                        
+                        <div class="highlight">
+                            <strong>💡 Astuce :</strong> Si le VPN est actif, déconnectez-le avant de lancer la mise à jour.
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="../tof/unc/unc3.png" alt="Installation du VPN" class="procedure-image">
+                            <div class="image-caption">⚙️ Lancement de l'installation VPN 7.2.12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Vérification de la version</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Après l'installation, ouvrez le client VPN et vérifiez la version installée.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/unc/unc4.png" alt="Vérification du VPN" class="procedure-image">
+                            <div class="image-caption">🔍 Vérification si VPN en 7.2.12</div>
+                        </div>
+                        
+                        <div class="tech-info">
+                            <strong>✅ Version attendue :</strong> 7.2.12 (Build xxxxx)
+                        </div>
+                        
+                        <p>Redémarrez le poste si nécessaire pour finaliser l'installation.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3>Validation et documentation</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Testez la connexion VPN avec vos identifiants habituels. Si tout fonctionne, mettez à jour le registre des versions installées pour le site concerné.</p>
+                        
+                        <div class="tech-info">
+                            <strong>🎯 Points de validation :</strong><br>
+                            ✅ Connexion réussie<br>
+                            ✅ Version 7.2.12 affichée<br>
+                            ✅ Aucun message d'erreur détecté
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🔑 Points de contrôle essentiels</h3>
+                <div style="margin-top: 12px;">
+                    <div style="margin: 8px 0;">✅ <strong>Droits d'accès :</strong> Vérifier les permissions UNC avant installation</div>
+                    <div style="margin: 8px 0;">✅ <strong>Déconnexion VPN :</strong> Fermer la connexion active avant mise à jour</div>
+                    <div style="margin: 8px 0;">✅ <strong>Droits admin :</strong> Exécution en tant qu'administrateur requise</div>
+                    <div style="margin: 8px 0;">✅ <strong>Test post-installation :</strong> Validation complète de la connectivité</div>
+                    <div style="margin: 8px 0;">✅ <strong>Documentation :</strong> Mise à jour du registre des versions</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Documentation technique Novares - Installation logiciels via UNC</p>
+            <p>© 2024-2026 Novares Group. Tous droits réservés.</p>
+        </div>
+    </div>
+
+ <a href="#" class="back-to-top" id="backToTop">← Retour au portfolio</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // Gestion du clic pour revenir à l'index
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirection vers index.html à l'ancre #experiences
+            window.location.href = '../index.html#experiences';
+        });
+        
+        // Affichage du bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>

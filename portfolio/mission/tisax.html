@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Écrans TISAX - Documentation Technique Novares</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background: #f6f8fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            overflow: hidden;
+            border: 1px solid #d1d9e0;
+        }
+        
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
+        }
+
+        /* Wrapper pour la grille du header */
+        .header-content-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* --- SIDEBAR COMPETENCES --- */
+        .competences-sidebar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competences-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+
+        .competence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .competence-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competence-badge {
+            background: white;
+            color: #24292f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .competence-text {
+            font-size: 0.9em;
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* --- CONTENT --- */
+        .content {
+            padding: 40px;
+        }
+        
+        .info-card {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .info-card h3 {
+            color: #1e40af;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .site-card {
+            background: #eff6ff;
+            border: 1px solid #60a5fa;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .site-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .site-card h4 {
+            color: #1e40af;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .procedure {
+            margin-top: 32px;
+        }
+        
+        .procedure h2 {
+            color: #24292f;
+            border-bottom: 2px solid #1e40af;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .step {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .step:hover {
+            border-color: #1e40af;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .step-number {
+            background: #1e40af;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .step h3 {
+            color: #24292f;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .step-content {
+            color: #656d76;
+            line-height: 1.6;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .procedure-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #d1d9e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .procedure-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .image-caption {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #656d76;
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .mock-vpn-console {
+            background: #0d1117;
+            color: #c9d1d9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875em;
+        }
+        
+        .mock-vpn-console .title-bar {
+            background: #374151;
+            margin: -16px -16px 12px -16px;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .vpn-line {
+            margin: 4px 0;
+            padding: 4px;
+        }
+        
+        .vpn-success {
+            color: #7dd3fc;
+        }
+        
+        .vpn-success::before {
+            content: "✓ ";
+            color: #10b981;
+        }
+        
+        .status-ok {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 4px;
+            font-size: 0.875em;
+        }
+        
+        .highlight {
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .highlight strong {
+            color: #1e40af;
+        }
+        
+        .tech-info {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+        
+        .tech-info strong {
+            color: #1d4ed8;
+        }
+        
+        /* --- FOOTER --- */
+        .footer {
+            background: #24292f;
+            color: #f0f6fc;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9em;
+        }
+        
+        /* --- BOUTON FLOTTANT --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .header {
+                padding: 24px;
+            }
+            
+            .header-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .step-number {
+                margin-right: 0;
+            }
+
+            .competences-sidebar {
+                padding: 15px;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content-wrapper">
+                <div>
+                    <h1>🖥️ Écrans TISAX - Configuration et Utilisation</h1>
+                    <div class="subtitle">Procédure Novares - Documentation Technique</div>
+                </div>
+                <div class="competences-sidebar">
+                    <h3>🎯 Compétences E4</h3>
+                    <div class="competence-list">
+                        <div class="competence-item">
+                            <span class="competence-badge">A1, A2, A3, A6</span>
+                            <span class="competence-text">Conformité et préparation audits TISAX</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="info-card">
+                <h3>📋 Contexte de la procédure</h3>
+                <p>Cette procédure décrit la configuration et l'utilisation des écrans TISAX (Trusted Information Security Assessment Exchange) pour assurer la protection des données sensibles dans l'environnement Novares.</p>
+            </div>
+            
+            <div class="sites-grid">
+                <div class="site-card">
+                    <h4>🏢 Site de Lens</h4>
+                    <p>Centre d'expertise</p>
+                </div>
+                <div class="site-card">
+                    <h4>🏭 Site de Libercourt</h4>
+                    <p>Usine</p>
+                </div>
+                <div class="site-card">
+                    <h4>🏭 Site de Villers-Bretonneux</h4>
+                    <p>Usine</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>🎯 Déclenchement :</strong> Cette procédure est initiée lors de l'installation de nouveaux postes ou après des mises à jour de sécurité importantes.
+            </div>
+            
+            <div class="procedure">
+                <h2>⚙️ Configuration des écrans TISAX</h2>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Identification des besoins de protection</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Inventaire des écrans.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/tisax/extisax.png" alt="Niveaux de protection TISAX" class="procedure-image">
+                            <div class="image-caption">📝 Inventaire fait sur Excel</div>
+                        </div>
+                        
+                        <div class="tech-info">
+                            <strong>💡 Information :</strong> TISAX est un cadre d'évaluation de la sécurité de l'information spécifique à l'industrie automobile.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Commande des filtres</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Commander les filtres adaptés aux dimensions des écrans (écran fixe). Vérifier la disponibilité et les délais de livraison.</p>
+                        <p>Types de filtres :</p>
+                        <div class="mock-vpn-console">
+                            <div class="title-bar">Configuration Filtres - Paramètres requis</div>
+                            <div class="vpn-line vpn-success">3M PF235W9-EM <strong>(23.5" 16:9)</strong></div>
+                            <div class="vpn-line vpn-success">3M PF238W9-EM <strong>(23.8" 16:9)</strong></div>
+                            <div class="vpn-line vpn-success">3M PF240W9-EM <strong>(24" 16:9)</strong></div>
+                            <div class="vpn-line vpn-success">3M PF260W9-EM <strong>(26" 16:9)</strong></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Mise en place des filtres de confidentialité</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Un filtre de confidentialité est un accessoire qui se place sur l'écran pour empêcher la vue latérale et protéger les informations sensibles.</p>
+                        
+                        <div class="image-container">
+                            <img src="../tof/tisax/tisax1.jpg" alt="Filtre de Confidentialité" class="procedure-image">
+                            <div class="image-caption">⚙️ Exemple de filtre de confidentialité</div>
+                        </div>
+                        
+                        <div class="tech-info">
+                            <strong>🔐 Sécurité :</strong> Les écrans de protection empêchent la visualisation non autorisée des informations sensibles.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <h3>Installation et configuration</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Installer et configurer les filtres de confidentialité physique ou logicielle.</p>
+                        <p>Ces paramètres doivent correspondre exactement à ceux définis par la politique de sécurité.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">5</span>
+                        <h3>Vérification de l'installation</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>S'assurer que le filtre fonctionne correctement.</p>
+                        <div class="image-container">
+                            <img src="../tof/tisax/tisax2.png" alt="Vérification du Filtre" class="procedure-image">
+                            <div class="image-caption">Vérification de l'efficacité du filtre</div>
+                        </div>
+                        <p>Points de contrôle :</p>
+                        <div style="margin: 16px 0;">
+                            <h4 style="margin-bottom: 8px;">Tests à effectuer :</h4>
+                            <span class="status-ok">✅ Lisibilité parfaite face à l'écran</span><br>
+                            <span class="status-ok">✅ Occultation complète au-delà de 30°</span><br>
+                            <span class="status-ok">✅ Absence de reflets gênants</span><br>
+                            <span class="status-ok">✅ Fixation solide du filtre</span>
+                        </div>
+                        <div class="highlight">
+                            <strong>🎯 Validation :</strong> Les informations à l'écran doivent être illisibles en dehors de l'angle de vision autorisé.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">6</span>
+                        <h3>Test des délais de verrouillage</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Tester les délais de verrouillage automatique de l'écran en cas d'inactivité. Sur les sites de Novares, des mesures de sécurité organisationnelles et techniques sont déjà appliquées.</p>
+                        
+                        <div style="margin: 16px 0;">
+                            <h4 style="margin-bottom: 8px;">Tests à effectuer :</h4>
+                            <span class="status-ok">✅ Verrouillage après 5 minutes d'inactivité</span><br>
+                            <span class="status-ok">✅ Masquage automatique du contenu</span><br>
+                            <span class="status-ok">✅ Rétablissement après authentification</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">7</span>
+                        <h3>Formation des utilisateurs</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Sensibiliser les utilisateurs aux bonnes pratiques d'utilisation des écrans TISAX.</p>
+                        
+                        <div class="tech-info">
+                            <strong>📝 Important :</strong> Documenter la formation et obtenir l'accord des utilisateurs sur la politique de sécurité.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">8</span>
+                        <h3>Documentation et audit</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Documenter la configuration et préparer les éléments pour l'audit TISAX.</p>
+                        
+                        <div class="tech-info">
+                            <strong>📝 Traçabilité :</strong> Conserver une trace de toutes les configurations pour les audits de conformité.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🔑 Points de contrôle essentiels</h3>
+                <div style="margin-top: 12px;">
+                    <div style="margin: 8px 0;">✅ <strong>Filtres :</strong> Correctement installés et configurés</div>
+                    <div style="margin: 8px 0;">✅ <strong>Angles de vision :</strong> Respectés et fonctionnels</div>
+                    <div style="margin: 8px 0;">✅ <strong>Verrouillage automatique :</strong> Opérationnel</div>
+                    <div style="margin: 8px 0;">✅ <strong>Formation :</strong> Utilisateurs sensibilisés</div>
+                    <div style="margin: 8px 0;">✅ <strong>Documentation :</strong> Complète et à jour</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Documentation technique Novares - Conformité et préparation audits TISAX</p>
+            <p>© 2024-2026 Novares Group. Tous droits réservés.</p>
+        </div>
+    </div>
+    
+  <a href="#" class="back-to-top" id="backToTop">← Retour au portfolio</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // Gestion du clic pour revenir à l'index
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirection vers index.html à l'ancre #experiences
+            window.location.href = '../index.html#experiences';
+        });
+        
+        // Affichage du bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>

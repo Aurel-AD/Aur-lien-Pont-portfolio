@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide IT - Authentification Multi-Facteurs (MFA/2FA)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0969da, #218bff);
+            color: white;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .competences-sidebar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competences-sidebar h3 {
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1em;
+        }
+
+        .competence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .competence-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .competence-badge {
+            background: white;
+            color: #24292f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .competence-text {
+            font-size: 0.9em;
+            color: white;
+            font-weight: 500;
+        }
+
+        .ticket-info {
+            background: #dbeafe;
+            padding: 20px;
+            border-left: 4px solid #0969da;
+        }
+
+        .ticket-info h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ticket-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .ticket-item {
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .ticket-item strong {
+            color: #1e40af;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .guide-section {
+            background: #eff6ff;
+            padding: 25px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .guide-section h3 {
+            color: #1d4ed8;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guide-section p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .important-note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .important-note h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .important-note p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .pdf-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .pdf-header {
+            background: #495057;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .pdf-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            background: #0969da;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0550b3;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+
+        .pdf-viewer {
+            background: white;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .pdf-viewer iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
+
+        .pdf-fallback {
+            display: none;
+            padding: 50px 30px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .pdf-fallback.show {
+            display: block;
+        }
+
+        .pdf-fallback h4 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .pdf-fallback p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .status-resolved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0969da;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #0969da, #218bff);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            background: #24292f;
+            color: #f0f6fc;
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .pdf-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .pdf-actions {
+                justify-content: center;
+            }
+
+            .ticket-details {
+                grid-template-columns: 1fr;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📖 Guides Utilisateurs</h1>
+                <div class="subtitle">Authentification Multi-Facteurs (MFA) - Documentation technique</div>
+            </div>
+            <div class="competences-sidebar">
+                <h3>🎯 Compétences E4</h3>
+                <div class="competence-list">
+                    <div class="competence-item">
+                        <span class="competence-badge">E3, F1</span>
+                        <span class="competence-text">Création et mise à jour documentation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-info">
+            <h3>🎫 Informations du ticket</h3>
+            <div class="ticket-details">
+                <div class="ticket-item">
+                    <strong>Problème :</strong> Configuration MFA
+                </div>
+                <div class="ticket-item">
+                    <strong>Contexte :</strong> Sécurité des comptes utilisateurs
+                </div>
+                <div class="ticket-item">
+                    <strong>Solution :</strong> Guide d'installation et dépannage
+                </div>
+                <div class="ticket-item">
+                    <strong>Statut :</strong> <span class="status-indicator status-resolved">✓ Documentation fournie</span>
+                </div>
+            </div>
+            <p><strong>Objectif :</strong> Permettre à l'utilisateur de configurer et dépanner l'authentification multi-facteurs sur ses différents comptes et applications.</p>
+        </div>
+
+        <div class="content">
+            <div class="guide-section">
+                <h3>🛠️ Contenu du guide</h3>
+                <p>
+                    Ce document contient les instructions détaillées pour configurer et utiliser 
+                    l'authentification multi-facteurs sur différentes plateformes :
+                </p>
+                <p>
+                    <strong>• Principes MFA/2FA</strong> - Comprendre l'authentification à plusieurs facteurs<br>
+                    <strong>• Applications d'authentification</strong> - Microsoft Authenticator, Google Authenticator, etc.<br>
+                    <strong>• Configuration par service</strong> - Office 365, Google, Facebook, etc.<br>
+                    <strong>• Dépannage commun</strong> - Problèmes de synchronisation, perte d'appareil<br>
+                    <strong>• Codes de récupération</strong> - Gestion et utilisation des codes de secours
+                </p>
+            </div>
+
+            <div class="important-note">
+                <h4>⚠️ Information importante</h4>
+                <p>
+                    L'authentification multi-facteurs est essentielle pour la sécurité de vos comptes.
+                    Conservez toujours vos codes de récupération en lieu sûr et configurez plusieurs méthodes d'authentification.
+                </p>
+            </div>
+
+            <div class="pdf-section">
+                <div class="pdf-header">
+                    <div class="pdf-title">
+                        📋 Documentation pour le MFA
+                    </div>
+                    <div class="pdf-actions">
+                        <button onclick="refreshDoc()" class="btn btn-warning" title="Recharger le document">
+                            🔄 Actualiser
+                        </button>
+                        <a href="../files/PROC-MFA.pdf" target="_blank" class="btn" title="Ouvrir dans un nouvel onglet">
+                            🔗 Ouvrir
+                        </a>
+                        <a href="../files/PROC-MFA.pdf" download class="btn btn-success" title="Télécharger le guide">
+                            📥 Télécharger
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pdf-viewer" id="pdfViewer">
+                    <div class="loading" id="loadingDiv">
+                        <div class="spinner"></div>
+                        <p>Chargement du document...</p>
+                    </div>
+                    <iframe 
+                        src="../files/PROC-MFA.pdf#view=FitH"
+                        id="pdfFrame"
+                        title="Guide Authentification Multi-Facteurs (MFA/2FA)"
+                        onload="handleLoad()"
+                        onerror="handleError()">
+                    </iframe>
+                    <div class="pdf-fallback" id="fallbackDiv">
+                        <h4>📄 Affichage alternatif</h4>
+                        <p>Le document ne peut pas être affiché directement. Utilisez les options ci-dessous pour y accéder :</p>
+                        <div>
+                            <a href="../files/PROC-MFA.pdf" target="_blank" class="btn">
+                                🔗 Ouvrir dans un nouvel onglet
+                            </a>
+                            <a href="../files/PROC-MFA.pdf" download class="btn btn-success">
+                                📥 Télécharger le PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Documentation technique Novares - Création et mise à jour documentation</p>
+            <p>© 2024-2026 Novares Group. Tous droits réservés.</p>
+        </div>
+    </div>
+
+<a href="#" class="back-to-top" id="backToTop">← Retour au portfolio</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        // Gestion du clic pour revenir à l'index
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirection vers index.html à l'ancre #experiences
+            window.location.href = '../index.html#experiences';
+        });
+        
+        // Affichage du bouton lors du scroll
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>
